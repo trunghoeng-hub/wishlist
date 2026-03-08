@@ -2,18 +2,12 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Bụt hiện lên và nói</title>
+<title>Trum 💗 An Wishlis</title>
+
 <link rel="icon" type="image/png" href="favicon.png">
 
 <style>
-body{
-font-family: Arial;
-background:#111;
-color:white;
-display:flex;
-justify-content:center;
-padding:40px;
-}
+Trum 💗 An Wishlis
 
 .container{
 display:flex;
@@ -55,6 +49,29 @@ border-radius:5px;
 background:red;
 margin-top:5px;
 }
+
+.heart{
+position:fixed;
+top:-10px;
+font-size:20px;
+animation:fall 6s linear forwards;
+pointer-events:none;
+}
+
+@keyframes fall{
+
+0%{
+transform:translateY(0);
+opacity:1;
+}
+
+100%{
+transform:translateY(110vh);
+opacity:0;
+}
+
+}
+
 </style>
 
 </head>
@@ -168,7 +185,28 @@ list.appendChild(div)
 loadList("trum")
 loadList("an")
 
+function createHeart(){
+
+const heart=document.createElement("div")
+
+heart.className="heart"
+
+heart.innerHTML="💗"
+
+heart.style.left=Math.random()*100+"vw"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{
+heart.remove()
+},6000)
+
+}
+
+setInterval(createHeart,500)
+  
 </script>
 
 </body>
+
 </html>
