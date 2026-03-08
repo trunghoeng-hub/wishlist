@@ -2,257 +2,162 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Trum 💗 An Wishlist</title>
+<title>Bụt hiện lên và nói</title>
+<link rel="icon" type="image/png" href="favicon.png">
 
 <style>
-
 body{
-margin:0;
-font-family:sans-serif;
-
-background-image:url("background.jpg");
-background-size:cover;
-background-position:center;
-
-min-height:100vh;
-
+font-family: Arial;
+background:#111;
+color:white;
 display:flex;
 justify-content:center;
-align-items:center;
-gap:40px;
-flex-wrap:wrap;
+padding:40px;
 }
 
-/* card */
+.container{
+display:flex;
+gap:40px;
+}
 
 .box{
-
-background:rgba(255,255,255,0.15);
-
-backdrop-filter:blur(10px);
-
-border-radius:20px;
-
-padding:25px;
-
-width:320px;
-
-color:white;
-
-box-shadow:0 0 20px rgba(255,100,200,0.3);
-
+background:#1e1e1e;
+padding:20px;
+border-radius:10px;
+width:300px;
 }
-
-/* title */
-
-h2{
-text-align:center;
-margin-top:0;
-}
-
-/* input */
 
 input{
-
 width:100%;
-padding:10px;
-margin:5px 0;
-
-border-radius:10px;
-
+margin-bottom:10px;
+padding:8px;
 border:none;
-
-outline:none;
-
+border-radius:5px;
 }
-
-/* button */
 
 button{
-
-width:100%;
-
-padding:10px;
-
+padding:8px;
 border:none;
-
-border-radius:10px;
-
-background:#ff6ec7;
-
+background:#4CAF50;
 color:white;
-
-font-weight:bold;
-
+border-radius:5px;
 cursor:pointer;
-
-margin-top:5px;
-
-transition:0.3s;
-
 }
 
-button:hover{
-
-box-shadow:0 0 10px #ff6ec7;
-
-transform:scale(1.05);
-
+.item{
+background:#2a2a2a;
+padding:10px;
+margin-top:10px;
+border-radius:5px;
 }
-
-/* list */
-
-ul{
-
-list-style:none;
-
-padding:0;
-
-}
-
-/* item card */
-
-li{
-
-background:rgba(255,255,255,0.2);
-
-margin:10px 0;
-
-padding:12px;
-
-border-radius:12px;
-
-box-shadow:0 0 10px rgba(255,255,255,0.2);
-
-}
-
-/* link */
-
-a{
-color:#fff;
-}
-
-/* delete button */
 
 .delete{
-
-background:#ff4d6d;
-
+background:red;
 margin-top:5px;
-
 }
-
-/* bought */
-
-.bought{
-
-opacity:0.5;
-
-text-decoration:line-through;
-
-}
-
-/* mobile */
-
-@media(max-width:700px){
-
-body{
-
-flex-direction:column;
-
-padding:20px;
-
-}
-
-}
-
 </style>
 
 </head>
-
 <body>
 
+<div class="container">
+
 <div class="box">
+<h2>Danh sách Trum</h2>
 
-<h2>Trum 💗</h2>
+<input id="giftT" placeholder="Quà">
+<input id="priceT" placeholder="Giá">
+<input id="linkT" placeholder="Link">
 
-<input id="gift0" placeholder="Tên quà">
+<button onclick="addItem('trum')">Thêm</button>
 
-<input id="price0" placeholder="Giá">
+<div id="list-trum"></div>
+</div>
 
-<input id="link0" placeholder="Link">
 
-<button onclick="addGift(0)">Thêm</button>
+<div class="box">
+<h2>Danh sách An</h2>
 
-<ul id="list0"></ul>
+<input id="giftA" placeholder="Quà">
+<input id="priceA" placeholder="Giá">
+<input id="linkA" placeholder="Link">
+
+<button onclick="addItem('an')">Thêm</button>
+
+<div id="list-an"></div>
+</div>
 
 </div>
 
-<div class="box">
 
-<h2>An 🌸</h2>
+<script type="module">
 
-<input id="gift1" placeholder="Tên quà">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<input id="price1" placeholder="Giá">
+const firebaseConfig = {
+  apiKey: "AIzaSyBnbgpwDsW8wopFOZ0PIt6Qy5EoirJU570",
+  authDomain: "wishlist-4ccb0.firebaseapp.com",
+  projectId: "wishlist-4ccb0",
+  storageBucket: "wishlist-4ccb0.firebasestorage.app",
+  messagingSenderId: "438711329642",
+  appId: "1:438711329642:web:6091a8971a1f78199fbb13",
+  measurementId: "G-QQGWJH4YL7"
+};
 
-<input id="link1" placeholder="Link">
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-<button onclick="addGift(1)">Thêm</button>
 
-<ul id="list1"></ul>
+window.addItem = async function(user){
 
-</div>
+let gift,price,link
 
-<script>
+if(user==="trum"){
+gift=document.getElementById("giftT").value
+price=document.getElementById("priceT").value
+link=document.getElementById("linkT").value
+}else{
+gift=document.getElementById("giftA").value
+price=document.getElementById("priceA").value
+link=document.getElementById("linkA").value
+}
 
-/* load data */
-
-let data=JSON.parse(localStorage.getItem("wishlist")) || [[],[]]
-
-/* save */
-
-function save(){
-
-localStorage.setItem("wishlist",JSON.stringify(data))
+await addDoc(collection(db,user),{
+gift:gift,
+price:price,
+link:link
+})
 
 }
 
-/* render */
+function loadList(user){
 
-function render(){
+const list=document.getElementById("list-"+user)
 
-[0,1].forEach(n=>{
+onSnapshot(collection(db,user),(snapshot)=>{
 
-let ul=document.getElementById("list"+n)
+list.innerHTML=""
 
-ul.innerHTML=""
+snapshot.forEach(docItem=>{
 
-data[n].forEach((item,i)=>{
+const data=docItem.data()
 
-let li=document.createElement("li")
+const div=document.createElement("div")
+div.className="item"
 
-if(item.bought){
+div.innerHTML=`
+<b>${data.gift}</b><br>
+💰 ${data.price}<br>
+<a href="${data.link}" target="_blank">Link</a><br>
+<button class="delete">Xóa</button>
+`
 
-li.classList.add("bought")
-
+div.querySelector("button").onclick=async()=>{
+await deleteDoc(doc(db,user,docItem.id))
 }
 
-li.innerHTML=
-
-"<b>🎁 "+item.gift+"</b>"+
-
-"<br>💰 "+item.price+
-
-"<br><a href='"+item.link+"' target='_blank'>🔗 Link</a>"+
-
-"<br><button onclick='toggleBought("+n+","+i+")'>Đã mua</button>"+
-
-"<button class='delete' onclick='deleteGift("+n+","+i+")'>Xóa</button>"
-
-ul.appendChild(li)
+list.appendChild(div)
 
 })
 
@@ -260,61 +165,8 @@ ul.appendChild(li)
 
 }
 
-/* add */
-
-function addGift(n){
-
-let gift=document.getElementById("gift"+n).value
-
-let price=document.getElementById("price"+n).value
-
-let link=document.getElementById("link"+n).value
-
-if(!gift)return
-
-data[n].push({
-
-gift,
-
-price,
-
-link,
-
-bought:false
-
-})
-
-save()
-
-render()
-
-}
-
-/* delete */
-
-function deleteGift(n,i){
-
-data[n].splice(i,1)
-
-save()
-
-render()
-
-}
-
-/* bought */
-
-function toggleBought(n,i){
-
-data[n][i].bought=!data[n][i].bought
-
-save()
-
-render()
-
-}
-
-render()
+loadList("trum")
+loadList("an")
 
 </script>
 
