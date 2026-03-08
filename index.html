@@ -283,17 +283,18 @@ link:link
 
 }
 
-/* reset ô nhập */
-if(user==="trum"){
-document.getElementById("giftT").value=""
-document.getElementById("priceT").value=""
-document.getElementById("linkT").value=""
-}else{
-document.getElementById("giftA").value=""
-document.getElementById("priceA").value=""
-document.getElementById("linkA").value=""
-}
+window.addItem = async function(user){
 
+let gift,price,link
+
+if(user==="trum"){
+gift=document.getElementById("giftT").value
+price=document.getElementById("priceT").value
+link=document.getElementById("linkT").value
+}else{
+gift=document.getElementById("giftA").value
+price=document.getElementById("priceA").value
+link=document.getElementById("linkA").value
 }
 
 await addDoc(collection(db,user),{
@@ -367,6 +368,7 @@ setInterval(createHeart,500)
   
 </body>
 </html>
+
 
 
 
