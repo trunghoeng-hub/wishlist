@@ -30,41 +30,55 @@ gap:40px;
 }
 
 .box{
-background:#1e1e1e;
-padding:20px;
-border-radius:10px;
+background:rgba(0,0,0,0.5);
+backdrop-filter: blur(10px);
+padding:25px;
+border-radius:15px;
 width:300px;
+border:1px solid rgba(255,255,255,0.3);
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
 }
 
 input{
 width:100%;
 margin-bottom:10px;
-padding:8px;
+padding:10px;
 border:none;
-border-radius:5px;
-background:#e0e0e0;
+border-radius:8px;
+background:#e6e6e6;
 color:black;
 }
 
 button{
-padding:8px;
+padding:10px;
 border:none;
-background:pink;
+background:#ff6fa5;
 color:white;
-border-radius:5px;
+border-radius:8px;
 cursor:pointer;
+width:100%;
+font-weight:bold;
+}
+
+button:hover{
+background:#ff4f8b;
 }
 
 .item{
-background:#2a2a2a;
+background:rgba(255,255,255,0.15);
 padding:10px;
 margin-top:10px;
-border-radius:5px;
+border-radius:8px;
 }
 
 .delete{
-background:red;
-margin-top:5px;
+background:#ff4d4d;
+margin-top:6px;
 }
 </style>
 
@@ -184,6 +198,7 @@ loadList("an")
 </body>
 
 </html>
+
 
 
 
