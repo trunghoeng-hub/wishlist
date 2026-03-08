@@ -10,29 +10,23 @@
 body{
 margin:0;
 font-family:sans-serif;
-
 background:linear-gradient(135deg,#7b1c1c,#b33a3a);
-
 min-height:100vh;
 
 display:flex;
 justify-content:center;
 align-items:center;
 gap:40px;
-
 flex-wrap:wrap;
 }
 
 /* BOX */
 
 .box{
-
 background:rgba(255,255,255,0.1);
-
 backdrop-filter:blur(20px);
 
 padding:30px;
-
 border-radius:30px;
 
 width:340px;
@@ -43,13 +37,6 @@ border:1px solid rgba(255,255,255,0.4);
 box-shadow:
 0 20px 60px rgba(0,0,0,0.5),
 0 0 25px rgba(255,150,200,0.3);
-
-transition:0.3s;
-
-}
-
-.box:hover{
-transform:translateY(-5px);
 }
 
 /* TITLE */
@@ -57,44 +44,34 @@ transform:translateY(-5px);
 h2{
 text-align:center;
 margin-bottom:20px;
-font-size:28px;
+font-size:26px;
 color:white;
 }
 
 /* INPUT */
 
 input{
-
 width:100%;
-
 padding:14px;
-
 margin-bottom:12px;
 
 border:none;
-
 border-radius:18px;
 
 background:rgba(255,255,255,0.3);
 
 color:white;
 
-font-size:14px;
-
 box-sizing:border-box;
-
 }
 
 /* BUTTON */
 
 button{
-
 width:100%;
-
 padding:14px;
 
 border:none;
-
 border-radius:20px;
 
 background:linear-gradient(45deg,#ff6fa5,#ff3f80);
@@ -102,27 +79,9 @@ background:linear-gradient(45deg,#ff6fa5,#ff3f80);
 color:white;
 
 font-weight:bold;
-
-font-size:16px;
+font-size:15px;
 
 cursor:pointer;
-
-transition:0.3s;
-
-box-shadow:
-0 0 10px rgba(255,100,150,0.6),
-0 0 20px rgba(255,100,150,0.4);
-
-}
-
-button:hover{
-
-transform:scale(1.05);
-
-box-shadow:
-0 0 20px rgba(255,100,150,0.9),
-0 0 40px rgba(255,100,150,0.7);
-
 }
 
 /* LIST */
@@ -134,69 +93,31 @@ margin-top:15px;
 display:none;
 }
 
-/* ITEM CARD */
+/* ITEM */
 
 li{
-
 background:rgba(255,255,255,0.25);
-
 padding:12px;
-
 margin-top:10px;
 
 border-radius:15px;
 
 border:1px solid rgba(255,255,255,0.5);
 
-box-shadow:0 10px 20px rgba(0,0,0,0.2);
-
-font-size:14px;
-
+color:white;
 }
 
 /* DELETE */
 
 .delete{
-
-margin-top:10px;
-
+margin-top:8px;
 background:#ff5252;
-
 padding:8px;
-
-border-radius:10px;
-
 border:none;
-
+border-radius:10px;
 color:white;
-
 cursor:pointer;
-
 width:100%;
-
-}
-
-/* HEART */
-
-.heart{
-
-position:fixed;
-
-top:-10px;
-
-font-size:20px;
-
-animation:fall 6s linear forwards;
-
-}
-
-@keyframes fall{
-
-to{
-transform:translateY(110vh);
-opacity:0;
-}
-
 }
 
 /* MOBILE */
@@ -204,11 +125,8 @@ opacity:0;
 @media (max-width:700px){
 
 body{
-
 flex-direction:column;
-
 padding:20px;
-
 }
 
 }
@@ -254,6 +172,21 @@ padding:20px;
 
 <script>
 
+let data={
+1:[],
+2:[]
+}
+
+/* LOAD DATA */
+
+if(localStorage.getItem("wishlist")){
+data=JSON.parse(localStorage.getItem("wishlist"))
+}
+
+render()
+
+/* ADD */
+
 function addGift(n){
 
 const gift=document.getElementById("gift"+n).value
@@ -262,35 +195,11 @@ const link=document.getElementById("link"+n).value
 
 if(!gift) return
 
-const li=document.createElement("li")
+data[n].push({gift,price,link})
 
-li.innerHTML=
+save()
 
-"🎁 "+gift+
-
-"<br>💰 "+price+
-
-"<br><a href='"+link+"' target='_blank'>🔗 Link</a>"+
-
-"<button class='delete'>Xóa</button>"
-
-const list=document.getElementById("list"+n)
-
-list.appendChild(li)
-
-list.style.display="block"
-
-/* delete */
-
-li.querySelector(".delete").onclick=function(){
-
-li.remove()
-
-if(list.children.length==0){
-list.style.display="none"
-}
-
-}
+render()
 
 document.getElementById("gift"+n).value=""
 document.getElementById("price"+n).value=""
@@ -298,27 +207,62 @@ document.getElementById("link"+n).value=""
 
 }
 
-/* HEART */
+/* DELETE */
 
-function createHeart(){
+function deleteGift(n,i){
 
-const heart=document.createElement("div")
+data[n].splice(i,1)
 
-heart.className="heart"
+save()
 
-heart.innerHTML="💗"
-
-heart.style.left=Math.random()*100+"vw"
-
-document.body.appendChild(heart)
-
-setTimeout(()=>{
-heart.remove()
-},6000)
+render()
 
 }
 
-setInterval(createHeart,500)
+/* SAVE */
+
+function save(){
+
+localStorage.setItem("wishlist",JSON.stringify(data))
+
+}
+
+/* RENDER */
+
+function render(){
+
+for(let n of [1,2]){
+
+const list=document.getElementById("list"+n)
+
+list.innerHTML=""
+
+if(data[n].length==0){
+
+list.style.display="none"
+continue
+
+}
+
+list.style.display="block"
+
+data[n].forEach((item,i)=>{
+
+const li=document.createElement("li")
+
+li.innerHTML=
+"🎁 "+item.gift+
+"<br>💰 "+item.price+
+"<br><a href='"+item.link+"' target='_blank'>🔗 Link</a>"+
+"<button class='delete' onclick='deleteGift("+n+","+i+")'>Xóa</button>"
+
+list.appendChild(li)
+
+})
+
+}
+
+}
 
 </script>
 
