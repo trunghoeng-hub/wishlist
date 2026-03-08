@@ -331,12 +331,12 @@ const db = firebase.database();
 const trum = document.getElementById("trum");
 const an = document.getElementById("an");
 
-db.ref("wishlist").on("value", snap => {
+db.ref("wishlist").on("value", snapshot => {
 
 trum.innerHTML = "";
 an.innerHTML = "";
 
-snap.forEach(child => {
+snapshot.forEach(child => {
 
 const data = child.val();
 const id = child.key;
@@ -348,10 +348,18 @@ div.innerHTML = `
 <b>${data.gift}</b><br>
 💰 ${data.price}<br>
 <a href="${data.link}" target="_blank">Link</a><br>
-<button onclick="deleteItem('${id}')">Xóa</button>
+<button class="delete">🗑 Xóa</button>
 `;
 
-if(data.person=="trum"){
+div.querySelector(".delete").addEventListener("click", function(){
+
+if(confirm("Bạn muốn xóa món này?")){
+firebase.database().ref("wishlist/" + id).remove();
+}
+
+});
+
+if(data.person === "trum"){
 trum.appendChild(div);
 }else{
 an.appendChild(div);
@@ -360,14 +368,11 @@ an.appendChild(div);
 });
 
 });
-
-function deleteItem(id){
-firebase.database().ref("wishlist/"+id).remove();
-}
 </script>
   
 </body>
 </html>
+
 
 
 
