@@ -283,28 +283,6 @@ link:link
 
 }
 
-window.addItem = async function(user){
-
-let gift,price,link
-
-if(user==="trum"){
-gift=document.getElementById("giftT").value
-price=document.getElementById("priceT").value
-link=document.getElementById("linkT").value
-}else{
-gift=document.getElementById("giftA").value
-price=document.getElementById("priceA").value
-link=document.getElementById("linkA").value
-}
-
-await addDoc(collection(db,user),{
-gift:gift,
-price:price,
-link:link
-})
-
-}
-
 function loadList(user){
 
 const list=document.getElementById("list-"+user)
@@ -324,7 +302,7 @@ div.innerHTML = `
 <b>${data.gift}</b><br>
 💰 ${data.price}<br>
 <a href="${data.link}" target="_blank">Link</a><br>
-<button class="delete" data-id="${id}">Xóa</button>
+<button class="delete" data-id="${docItem.id}">Xóa</button>
 `
 
 div.querySelector(".delete").onclick = async () => {
@@ -368,6 +346,7 @@ setInterval(createHeart,500)
   
 </body>
 </html>
+
 
 
 
