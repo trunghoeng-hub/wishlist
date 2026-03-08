@@ -1,9 +1,12 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Wishlist Trum 💗 An</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trum 💗 An Wishlist</title>
+
+<link rel="icon" href="icon.png">
 
 <style>
 
@@ -21,135 +24,183 @@ display:flex;
 justify-content:center;
 align-items:center;
 gap:40px;
-
 flex-wrap:wrap;
 }
 
-/* BOX */
+/* card */
 
 .box{
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(20px);
 
-padding:30px;
-border-radius:30px;
+background:rgba(255,255,255,0.15);
 
-width:340px;
-max-width:90vw;
+backdrop-filter:blur(10px);
 
-border:1px solid rgba(255,255,255,0.4);
+border-radius:20px;
 
-box-shadow:
-0 20px 60px rgba(0,0,0,0.5),
-0 0 25px rgba(255,150,200,0.3);
+padding:25px;
+
+width:320px;
+
+color:white;
+
+box-shadow:0 0 20px rgba(255,100,200,0.3);
+
 }
 
-/* TITLE */
+/* title */
 
 h2{
 text-align:center;
-margin-bottom:20px;
-font-size:26px;
-color:white;
+margin-top:0;
 }
 
-/* INPUT */
+/* input */
 
 input{
+
 width:100%;
-padding:14px;
-margin-bottom:12px;
+padding:10px;
+margin:5px 0;
+
+border-radius:10px;
 
 border:none;
-border-radius:18px;
 
-background:rgba(255,255,255,0.3);
+outline:none;
 
-color:white;
-
-box-sizing:border-box;
 }
 
-/* BUTTON */
+/* button */
 
 button{
+
 width:100%;
-padding:14px;
+
+padding:10px;
 
 border:none;
-border-radius:20px;
 
-background:linear-gradient(45deg,#ff6fa5,#ff3f80);
+border-radius:10px;
+
+background:#ff6ec7;
 
 color:white;
 
 font-weight:bold;
-font-size:15px;
 
 cursor:pointer;
+
+margin-top:5px;
+
+transition:0.3s;
+
 }
 
-/* LIST */
+button:hover{
+
+box-shadow:0 0 10px #ff6ec7;
+
+transform:scale(1.05);
+
+}
+
+/* list */
 
 ul{
+
 list-style:none;
+
 padding:0;
-margin-top:15px;
-display:none;
+
 }
 
-/* ITEM */
+/* item card */
 
 li{
-background:rgba(255,255,255,0.25);
+
+background:rgba(255,255,255,0.2);
+
+margin:10px 0;
+
 padding:12px;
-margin-top:10px;
 
-border-radius:15px;
+border-radius:12px;
 
-border:1px solid rgba(255,255,255,0.5);
+box-shadow:0 0 10px rgba(255,255,255,0.2);
 
-color:white;
 }
 
-/* DELETE */
+/* link */
+
+a{
+color:#fff;
+}
+
+/* delete button */
 
 .delete{
-margin-top:8px;
-background:#ff5252;
-padding:8px;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-width:100%;
+
+background:#ff4d6d;
+
+margin-top:5px;
+
 }
 
-/* MOBILE */
+/* bought */
 
-@media (max-width:700px){
+.bought{
+
+opacity:0.5;
+
+text-decoration:line-through;
+
+}
+
+/* mobile */
+
+@media(max-width:700px){
 
 body{
+
 flex-direction:column;
+
 padding:20px;
+
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- TRUM -->
+<div class="box">
+
+<h2>Trum 💗</h2>
+
+<input id="gift0" placeholder="Tên quà">
+
+<input id="price0" placeholder="Giá">
+
+<input id="link0" placeholder="Link">
+
+<button onclick="addGift(0)">Thêm</button>
+
+<ul id="list0"></ul>
+
+</div>
 
 <div class="box">
 
-<h2>Trum</h2>
+<h2>An 🌸</h2>
 
-<input id="gift1" placeholder="🎁 Quà">
-<input id="price1" placeholder="💰 Giá">
-<input id="link1" placeholder="🔗 Link">
+<input id="gift1" placeholder="Tên quà">
+
+<input id="price1" placeholder="Giá">
+
+<input id="link1" placeholder="Link">
 
 <button onclick="addGift(1)">Thêm</button>
 
@@ -157,74 +208,93 @@ padding:20px;
 
 </div>
 
-
-<!-- AN -->
-
-<div class="box">
-
-<h2>An</h2>
-
-<input id="gift2" placeholder="🎁 Quà">
-<input id="price2" placeholder="💰 Giá">
-<input id="link2" placeholder="🔗 Link">
-
-<button onclick="addGift(2)">Thêm</button>
-
-<ul id="list2"></ul>
-
-</div>
-
-
 <script>
 
-let data={
-1:[],
-2:[]
+/* load data */
+
+let data=JSON.parse(localStorage.getItem("wishlist")) || [[],[]]
+
+/* save */
+
+function save(){
+
+localStorage.setItem("wishlist",JSON.stringify(data))
+
 }
 
-/* LOAD DATA */
+/* render */
 
-if(localStorage.getItem("wishlist")){
-data=JSON.parse(localStorage.getItem("wishlist"))
+function render(){
+
+[0,1].forEach(n=>{
+
+let ul=document.getElementById("list"+n)
+
+ul.innerHTML=""
+
+data[n].forEach((item,i)=>{
+
+let li=document.createElement("li")
+
+if(item.bought){
+
+li.classList.add("bought")
+
 }
 
-render()
+li.innerHTML=
 
-/* ADD */
+"<b>🎁 "+item.gift+"</b>"+
+
+"<br>💰 "+item.price+
+
+"<br><a href='"+item.link+"' target='_blank'>🔗 Link</a>"+
+
+"<br><button onclick='toggleBought("+n+","+i+")'>Đã mua</button>"+
+
+"<button class='delete' onclick='deleteGift("+n+","+i+")'>Xóa</button>"
+
+ul.appendChild(li)
+
+})
+
+})
+
+}
+
+/* add */
 
 function addGift(n){
 
-const gift=document.getElementById("gift"+n).value
-const price=document.getElementById("price"+n).value
-const link=document.getElementById("link"+n).value
+let gift=document.getElementById("gift"+n).value
 
-if(!gift) return
+let price=document.getElementById("price"+n).value
 
-data[n].push({gift,price,link})
+let link=document.getElementById("link"+n).value
+
+if(!gift)return
+
+data[n].push({
+
+gift,
+
+price,
+
+link,
+
+bought:false
+
+})
 
 save()
 
 render()
 
-document.getElementById("gift"+n).value=""
-document.getElementById("price"+n).value=""
-document.getElementById("link"+n).value=""
-
 }
 
-/* DELETE */
+/* delete */
 
 function deleteGift(n,i){
-
-function toggleBought(n,i){
-
-data[n][i].bought = !data[n][i].bought
-
-save()
-
-render()
-
-}
 
 data[n].splice(i,1)
 
@@ -234,60 +304,21 @@ render()
 
 }
 
-/* SAVE */
+/* bought */
 
-function save(){
+function toggleBought(n,i){
 
-localStorage.setItem("wishlist",JSON.stringify(data))
+data[n][i].bought=!data[n][i].bought
 
-}
+save()
 
-/* RENDER */
-
-function render(){
-
-for(let n of [1,2]){
-
-const list=document.getElementById("list"+n)
-
-list.innerHTML=""
-
-if(data[n].length==0){
-
-list.style.display="none"
-continue
+render()
 
 }
 
-list.style.display="block"
-
-data[n].forEach((item,i)=>{
-
-const li=document.createElement("li")
-
-if(item.bought){
-li.style.opacity="0.5"
-li.style.textDecoration="line-through"
-}
-
-li.innerHTML=
-"<b>🎁 "+item.gift+"</b>"+
-"<br>💰 "+item.price+
-"<br><a href='"+item.link+"' target='_blank'>🔗 Link</a>"+
-"<button onclick='toggleBought("+n+","+i+")'>Đã mua</button>"+
-"<button class='delete' onclick='deleteGift("+n+","+i+")'>Xóa</button>"
-
-list.appendChild(li)
-
-})
-
-}
-
-}
+render()
 
 </script>
 
 </body>
 </html>
-
-
