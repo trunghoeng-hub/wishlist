@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <title>Bụt hiện lên và nói</title>
 <link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
-font-family: Arial;
+font-family: 'Poppins', sans-serif;
 background-image: url("background.jpg");
 background-size: cover;
 background-position: center;
@@ -30,15 +31,21 @@ gap:40px;
 }
 
 .box{
-background:rgba(0,0,0,0.5);
-backdrop-filter: blur(10px);
+background:rgba(0,0,0,0.45);
+backdrop-filter: blur(12px);
 padding:25px;
-border-radius:15px;
+border-radius:18px;
 width:300px;
+
 border:1px solid rgba(255,255,255,0.3);
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
+box-shadow:0 20px 40px rgba(0,0,0,0.6);
+
+transition:transform 0.3s;
 }
 
+.box:hover{
+transform:translateY(-5px);
+}
 h2{
 text-align:center;
 margin-bottom:15px;
@@ -57,12 +64,17 @@ color:black;
 button{
 padding:10px;
 border:none;
-background:#ff6fa5;
+background:linear-gradient(45deg,#ff6fa5,#ff3d7a);
 color:white;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
 width:100%;
 font-weight:bold;
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.05);
 }
 
 button:hover{
@@ -90,9 +102,9 @@ margin-top:6px;
 <div class="box">
 <h2> Trum</h2>
 
-<input id="giftT" placeholder="Quà">
-<input id="priceT" placeholder="Giá">
-<input id="linkT" placeholder="Link">
+<input id="giftT" placeholder="🎁 Quà">
+<input id="priceT" placeholder="💰 Giá">
+<input id="linkT" placeholder="🔗 Link">
 
 <button onclick="addItem('trum')">Thêm</button>
 
@@ -103,9 +115,9 @@ margin-top:6px;
 <div class="box">
 <h2> An</h2>
 
-<input id="giftA" placeholder="Quà">
-<input id="priceA" placeholder="Giá">
-<input id="linkA" placeholder="Link">
+<input id="giftA" placeholder="🎁 Quà">
+<input id="priceA" placeholder="💰 Giá">
+<input id="linkA" placeholder="🔗 Link">
 
 <button onclick="addItem('an')">Thêm</button>
 
@@ -198,6 +210,7 @@ loadList("an")
 </body>
 
 </html>
+
 
 
 
