@@ -275,6 +275,27 @@ price=document.getElementById("priceA").value
 link=document.getElementById("linkA").value
 }
 
+if(!gift) return alert("Nhập tên quà 🎁")
+
+await addDoc(collection(db,user),{
+gift:gift,
+price:price,
+link:link
+})
+
+/* reset ô nhập */
+if(user==="trum"){
+document.getElementById("giftT").value=""
+document.getElementById("priceT").value=""
+document.getElementById("linkT").value=""
+}else{
+document.getElementById("giftA").value=""
+document.getElementById("priceA").value=""
+document.getElementById("linkA").value=""
+}
+
+}
+
 await addDoc(collection(db,user),{
 gift:gift,
 price:price,
@@ -346,6 +367,7 @@ setInterval(createHeart,500)
   
 </body>
 </html>
+
 
 
 
