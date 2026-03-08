@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bụt hiện lên và nói</title>
+<link rel="icon" type="image/png" href="favicon.png">
 
+<style>
+body{
+font-family: Arial;
+background:#111;
+color:white;
+display:flex;
+justify-content:center;
+padding:40px;
+}
+
+.container{
+display:flex;
+gap:40px;
+}
+
+.box{
+background:#1e1e1e;
+padding:20px;
+border-radius:10px;
+width:300px;
+}
+
+input{
+width:100%;
+margin-bottom:10px;
+padding:8px;
+border:none;
+border-radius:5px;
+}
+
+button{
+padding:8px;
+border:none;
+background:#4CAF50;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+.item{
+background:#2a2a2a;
+padding:10px;
+margin-top:10px;
+border-radius:5px;
+}
+
+.delete{
+background:red;
+margin-top:5px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="box">
+<h2>Danh sách Trum</h2>
+
+<input id="giftT" placeholder="Quà">
+<input id="priceT" placeholder="Giá">
+<input id="linkT" placeholder="Link">
+
+<button onclick="addItem('trum')">Thêm</button>
+
+<div id="list-trum"></div>
+</div>
+
+
+<div class="box">
+<h2>Danh sách An</h2>
+
+<input id="giftA" placeholder="Quà">
+<input id="priceA" placeholder="Giá">
+<input id="linkA" placeholder="Link">
+
+<button onclick="addItem('an')">Thêm</button>
+
+<div id="list-an"></div>
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBnbgpwDsW8wopFOZ0PIt6Qy5EoirJU570",
+  authDomain: "wishlist-4ccb0.firebaseapp.com",
+  projectId: "wishlist-4ccb0",
+  storageBucket: "wishlist-4ccb0.firebasestorage.app",
+  messagingSenderId: "438711329642",
+  appId: "1:438711329642:web:6091a8971a1f78199fbb13",
+  measurementId: "G-QQGWJH4YL7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+window.addItem = async function(user){
+
+let gift,price,link
+
+if(user==="trum"){
+gift=document.getElementById("giftT").value
+price=document.getElementById("priceT").value
+link=document.getElementById("linkT").value
+}else{
+gift=document.getElementById("giftA").value
+price=document.getElementById("priceA").value
+link=document.getElementById("linkA").value
+}
+
+await addDoc(collection(db,user),{
+gift:gift,
+price:price,
+link:link
+})
+
+}
+
+function loadList(user){
+
+const list=document.getElementById("list-"+user)
+
+onSnapshot(collection(db,user),(snapshot)=>{
+
+list.innerHTML=""
+
+snapshot.forEach(docItem=>{
+
+const data=docItem.data()
+
+const div=document.createElement("div")
+div.className="item"
+
+div.innerHTML=`
+<b>${data.gift}</b><br>
+💰 ${data.price}<br>
+<a href="${data.link}" target="_blank">Link</a><br>
+<button class="delete">Xóa</button>
+`
+
+div.querySelector("button").onclick=async()=>{
+await deleteDoc(doc(db,user,docItem.id))
+}
+
+list.appendChild(div)
+
+})
+
+})
+
+}
+
+loadList("trum")
+loadList("an")
+
+</script>
+
+</body>
+</html>
