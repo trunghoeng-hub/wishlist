@@ -83,7 +83,10 @@ outline:none;
 backdrop-filter:blur(10px);
 
 border:1px solid rgba(255,255,255,0.25);
+
+box-sizing:border-box;
 }
+
 button{
 width:100%;
 padding:12px;
@@ -110,17 +113,8 @@ transition:0.3s;
 box-shadow:
 0 0 10px rgba(255,100,150,0.6),
 0 0 20px rgba(255,100,150,0.4);
-}
 
-button:hover{
-
-transform:scale(1.05);
-
-box-shadow:
-0 0 20px rgba(255,100,150,0.9),
-0 0 40px rgba(255,100,150,0.7),
-0 0 60px rgba(255,100,150,0.4);
-
+box-sizing:border-box;
 }
 
 /* item */
@@ -347,5 +341,6 @@ setInterval(createHeart,500)
   
 </body>
 </html>
+
 
 
