@@ -30,6 +30,7 @@ display:flex;
 gap:50px;
 align-items:flex-start;
 }
+
 /* KHUNG TRUM AN */
 .box{
 background:rgba(255,255,255,0.08);
@@ -201,22 +202,7 @@ max-width:400px;
 
 }
 
-.buy{
-background:#4CAF50;
-margin-top:6px;
-border-radius:8px;
-}
 
-.bought{
-text-decoration:line-through;
-opacity:0.6;
-}
-
-.product{
-width:100%;
-border-radius:10px;
-margin-bottom:8px;
-}
   
 </style>
 
@@ -313,14 +299,9 @@ const div=document.createElement("div")
 div.className="item"
 
 div.innerHTML=`
-<img src="${data.link}" class="product">
-
-<b class="gift">${data.gift}</b><br>
+<b>${data.gift}</b><br>
 💰 ${data.price}<br>
-
-<a href="${data.link}" target="_blank">Xem sản phẩm</a><br>
-
-<button class="buy">Đã mua</button>
+<a href="${data.link}" target="_blank">Link</a><br>
 <button class="delete">Xóa</button>
 `
 
@@ -366,6 +347,7 @@ setInterval(createHeart,500)
   
 </body>
 </html>
+
 
 
 
