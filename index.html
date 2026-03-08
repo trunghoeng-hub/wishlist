@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bụt Hiện Lên Và Nói</title>
+
+<style>
+
+body{
+background:#0c0c12;
+font-family:Arial;
+color:white;
+display:flex;
+justify-content:center;
+padding:40px;
+}
+
+.container{
+width:700px;
+background:#15151d;
+padding:25px;
+border-radius:15px;
+box-shadow:0 0 30px rgba(80, 127, 255, 0.2);
+}
+
+h1{
+color:#7ae0ff;
+}
+
+label{
+display:block;
+margin-top:15px;
+color:#aaa;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin-top:5px;
+border-radius:10px;
+border:none;
+background:#22222c;
+color:white;
+}
+
+.priority{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.priority button{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:none;
+background:#2c2c36;
+color:white;
+cursor:pointer;
+}
+
+.priority button.active{
+background:#0a0063;
+}
+
+.add{
+margin-top:20px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:25px;
+font-size:16px;
+background:linear-gradient(90deg,#ff5c8a,#ff8fb0);
+color:white;
+cursor:pointer;
+}
+
+.item{
+margin-top:15px;
+background:#1e1e26;
+padding:12px;
+border-radius:10px;
+}
+
+.delete{
+margin-top:10px;
+background:#ff4040;
+border:none;
+padding:6px 12px;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Bụt Hiện Lên Và Nói</h1>
+
+<label>tên quà mún nè</label>
+<input id="name" placeholder="nhập tên quà bbi mún vô đây nà">
+
+<label>Danh mục</label>
+<select id="category">
+<option>quần áo</option>
+<option>quà đôi</option>
+<option>Công nghệ</option>
+</select>
+
+<label>nhập giá nha bbi</label>
+<input id="price" placeholder="vừa ví thôi nha bbi...">
+
+<label>Link </label>
+<input id="link" placeholder="https://...">
+
+<label>Ghi chú</label>
+<textarea id="note"></textarea>
+
+<label>Độ ưu tiên</label>
+
+<div class="priority">
+
+<button onclick="setPriority(this)">MUỐN LUÔN</button>
+<button onclick="setPriority(this)">cũng thít thít</button>
+<button onclick="setPriority(this)">binh thuong</button>
+
+</div>
+
+<button class="add" onclick="addItem()">
+Thêm vô để bụt biết
+</button>
+
+<div id="list"></div>
+
+</div>
+
+<script>
+
+let gifts = JSON.parse(localStorage.getItem("gifts")) || []
+let priority=""
+
+function setPriority(btn){
+
+document.querySelectorAll(".priority button")
+.forEach(b=>b.classList.remove("active"))
+
+btn.classList.add("active")
+priority=btn.innerText
+
+}
+
+function render(){
+
+let list=document.getElementById("list")
+list.innerHTML=""
+
+gifts.forEach((g,i)=>{
+
+list.innerHTML+=`
+
+<div class="item">
+
+🎁 ${g.name}<br>
+💰 ${g.price}<br>
+⭐ ${g.priority}<br>
+<a href="${g.link}" target="_blank">Xem sản phẩm</a>
+
+<br>
+
+<button class="delete" onclick="deleteItem(${i})">
+Xóa
+</button>
+
+</div>
+
+`
+
+})
+
+}
+
+function addItem(){
+
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let link=document.getElementById("link").value
+
+let gift={
+name:name,
+price:price,
+link:link,
+priority:priority
+}
+
+gifts.push(gift)
+
+localStorage.setItem("gifts",JSON.stringify(gifts))
+
+render()
+
+}
+
+function deleteItem(index){
+
+gifts.splice(index,1)
+
+localStorage.setItem("gifts",JSON.stringify(gifts))
+
+render()
+
+}
+
+render()
+
+</script>
+
+</body>
+</html>
