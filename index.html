@@ -298,11 +298,11 @@ const data=docItem.data()
 const div=document.createElement("div")
 div.className="item"
 
-div.innerHTML=`
+div.innerHTML = `
 <b>${data.gift}</b><br>
 💰 ${data.price}<br>
 <a href="${data.link}" target="_blank">Link</a><br>
-<button class="delete">Xóa</button>
+<button class="delete" data-id="${id}">Xóa</button>
 `
 
 div.querySelector("button").onclick=async()=>{
@@ -368,6 +368,7 @@ firebase.database().ref("wishlist/"+id).remove();
   
 </body>
 </html>
+
 
 
 
